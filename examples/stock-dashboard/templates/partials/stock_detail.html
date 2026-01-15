@@ -69,58 +69,61 @@
             <div role="tablist" aria-label="Chart time period" class="flex bg-slate-900 rounded-lg p-1 gap-1">
                 <button
                     role="tab"
-                    aria-selected="false"
+                    aria-selected="{{ 'true' if current_period == '5d' else 'false' }}"
                     aria-controls="priceChart"
-                    class="period-btn px-3 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-700 transition-colors"
+                    class="period-btn px-3 py-1.5 text-xs font-medium rounded-md transition-colors {% if current_period == '5d' %}bg-blue-600 text-white{% else %}text-slate-400 hover:text-slate-200 hover:bg-slate-700{% endif %}"
                     data-period="5d"
                     hx-get="/stock/{{ stock.ticker }}?period=5d"
                     hx-target="#result"
-                    hx-swap="innerHTML"
+                    hx-swap="innerHTML transition:true"
                 >
                     5D
                 </button>
                 <button
                     role="tab"
-                    aria-selected="true"
+                    aria-selected="{{ 'true' if current_period == '1mo' else 'false' }}"
                     aria-controls="priceChart"
-                    class="period-btn px-3 py-1.5 text-xs font-medium rounded-md bg-blue-600 text-white"
+                    class="period-btn px-3 py-1.5 text-xs font-medium rounded-md transition-colors {% if current_period == '1mo' %}bg-blue-600 text-white{% else %}text-slate-400 hover:text-slate-200 hover:bg-slate-700{% endif %}"
                     data-period="1mo"
+                    hx-get="/stock/{{ stock.ticker }}?period=1mo"
+                    hx-target="#result"
+                    hx-swap="innerHTML transition:true"
                 >
                     1M
                 </button>
                 <button
                     role="tab"
-                    aria-selected="false"
+                    aria-selected="{{ 'true' if current_period == '3mo' else 'false' }}"
                     aria-controls="priceChart"
-                    class="period-btn px-3 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-700 transition-colors"
+                    class="period-btn px-3 py-1.5 text-xs font-medium rounded-md transition-colors {% if current_period == '3mo' %}bg-blue-600 text-white{% else %}text-slate-400 hover:text-slate-200 hover:bg-slate-700{% endif %}"
                     data-period="3mo"
                     hx-get="/stock/{{ stock.ticker }}?period=3mo"
                     hx-target="#result"
-                    hx-swap="innerHTML"
+                    hx-swap="innerHTML transition:true"
                 >
                     3M
                 </button>
                 <button
                     role="tab"
-                    aria-selected="false"
+                    aria-selected="{{ 'true' if current_period == '6mo' else 'false' }}"
                     aria-controls="priceChart"
-                    class="period-btn px-3 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-700 transition-colors"
+                    class="period-btn px-3 py-1.5 text-xs font-medium rounded-md transition-colors {% if current_period == '6mo' %}bg-blue-600 text-white{% else %}text-slate-400 hover:text-slate-200 hover:bg-slate-700{% endif %}"
                     data-period="6mo"
                     hx-get="/stock/{{ stock.ticker }}?period=6mo"
                     hx-target="#result"
-                    hx-swap="innerHTML"
+                    hx-swap="innerHTML transition:true"
                 >
                     6M
                 </button>
                 <button
                     role="tab"
-                    aria-selected="false"
+                    aria-selected="{{ 'true' if current_period == '1y' else 'false' }}"
                     aria-controls="priceChart"
-                    class="period-btn px-3 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-700 transition-colors"
+                    class="period-btn px-3 py-1.5 text-xs font-medium rounded-md transition-colors {% if current_period == '1y' %}bg-blue-600 text-white{% else %}text-slate-400 hover:text-slate-200 hover:bg-slate-700{% endif %}"
                     data-period="1y"
                     hx-get="/stock/{{ stock.ticker }}?period=1y"
                     hx-target="#result"
-                    hx-swap="innerHTML"
+                    hx-swap="innerHTML transition:true"
                 >
                     1Y
                 </button>
