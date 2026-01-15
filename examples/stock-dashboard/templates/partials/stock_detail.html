@@ -154,24 +154,42 @@
 
 <script>
     // Initialize chart with proper cleanup
-    (function() {
+    (function initChart() {
         const canvas = document.getElementById('priceChart');
+        if (!canvas) return;
+
+        // Aggressively clean up any existing chart
+        // Check both global reference and Chart.js registry
+        if (window.stockChart) {
+            try {
+                window.stockChart.destroy();
+            } catch (e) {
+                // Chart may have been on a removed canvas
+            }
+            window.stockChart = null;
+        }
+
+        // Also check if there's a chart instance on this specific canvas
+        const existingChart = Chart.getChart(canvas);
+        if (existingChart) {
+            existingChart.destroy();
+        }
+
+        // Clear the canvas to ensure clean state
         const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
         const history = {{ stock.history|tojson }};
         const isPositive = {{ 'true' if stock.change >= 0 else 'false' }};
-
-        // Destroy existing chart instance to prevent memory leaks
-        if (window.stockChart instanceof Chart) {
-            window.stockChart.destroy();
-        }
 
         // Color configuration based on performance
         const lineColor = isPositive ? '#10B981' : '#EF4444';
         const gradientColorStart = isPositive ? 'rgba(16, 185, 129, 0.25)' : 'rgba(239, 68, 68, 0.25)';
         const gradientColorEnd = 'rgba(0, 0, 0, 0)';
 
-        // Create gradient
-        const gradient = ctx.createLinearGradient(0, 0, 0, 280);
+        // Create gradient using actual canvas height
+        const canvasHeight = canvas.parentElement?.clientHeight || 280;
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvasHeight);
         gradient.addColorStop(0, gradientColorStart);
         gradient.addColorStop(1, gradientColorEnd);
 
@@ -180,7 +198,8 @@
         const minPrice = Math.min(...prices);
         const maxPrice = Math.max(...prices);
         const priceRange = maxPrice - minPrice;
-        const padding = priceRange * 0.1; // 10% padding
+        // Handle case where all prices are the same (flat line)
+        const padding = priceRange > 0 ? priceRange * 0.1 : minPrice * 0.05;
         const yMin = Math.max(0, minPrice - padding);
         const yMax = maxPrice + padding;
 
@@ -281,6 +300,9 @@
                 }
             }
         });
+
+        // Force resize after creation to ensure proper dimensions
+        window.stockChart.resize();
     })();
 </script>
 
