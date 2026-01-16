@@ -6,7 +6,7 @@ services:
       args:
         # Build-time arg for Next.js client-side API calls
         # LazyCloud transforms api.public to the actual public URL
-        NEXT_PUBLIC_API_URL: https://api.public
+        NEXT_PUBLIC_API_URL: http://localhost:3000
     ports:
       - "3000:3000"
     depends_on:
@@ -28,7 +28,6 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
-      # Use service name directly - K8s DNS handles resolution
       - REDIS_URL=redis://redis:6379
     volumes:
       - api-data:/app/data
