@@ -357,6 +357,15 @@ export default function Chat() {
     }
   }, [chats, currentChatId]);
 
+  // Auto-resize textarea based on content
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 150)}px`;
+    }
+  }, [input]);
+
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
@@ -576,7 +585,7 @@ export default function Chat() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="Send a message..."
-                  className="min-h-[40px] max-h-[200px] resize-none border-0 shadow-none focus-visible:ring-0"
+                  className="min-h-[40px] max-h-[150px] resize-none border-0 shadow-none focus-visible:ring-0 overflow-y-auto"
                   rows={1}
                   disabled={isLoading}
                 />
